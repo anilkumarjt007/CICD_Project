@@ -1,37 +1,32 @@
-apply plugin: 'maven-publish'
+apply plugin: 'maven'
+apply plugin: 'java'
 
-plugins {
-  //inlude the nodeJS plugin to execute nodejs and npm tasks
-  id "com.moowork.node" version "1.2.0"
+sourceCompatibility = 7
+targetCompatibility = 7
+
+dependencies {
+    compile            'com.google.guava:guava:13.0.1'
+    compile            'joda-time:joda-time:2.1'
+    
+    testCompile        'junit:junit:4.11'
+    testCompile        'org.mockito:mockito-core:1.9.5'
 }
 
-node {
-	download = true
-	version = "9.11.1"
-	npmVersion = "5.6.0"
+task writeNewPom << {
+    pom {
+        project {
+            groupId 'org.example'
+            artifactId 'test'
+            version '1.0.0'
+        
+            inceptionYear '2008'
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }
+        }
+    }.writeTo("$buildDir/newpom.xml")
 }
-
-//declare a build task
-task build
-
-//declare a task to create a zip of the app
-task zip(type: Zip) {
-	from ('.') {
-		include "*"
-		include "bin/**"
-		include "data/**"
-		include "node_modules/**"
-		include "public/**"
-		include "routes/**"
-		include "views/**"
-	}
-	destinationDir(file("dist"))
-	baseName "trainSchedule"
-}
-
-//declare task dependencies
-build.dependsOn zip
-zip.dependsOn npm_build
-npm_build.dependsOn npm_test
-npm_test.dependsOn npmInstall
-npm_build.dependsOn npmInstall
