@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <!--<groupId></groupId>-->
   <artifactId>cicd-pipeline-train-schedule-jenkins</artifactId>
-  <version>unspecified</version>
+  <version>unspecified</version>-->
   <dependencies>
     <dependency>
       <groupId>com.google.guava</groupId>
